@@ -14,6 +14,14 @@ var Spotify = require("node-spotify-api");
 var keys = require("./keys");
 var spotify = new Spotify(keys.spotify);
 //==========================================
+var concerts = axios
+.get("https://rest.bandsintown.com/artists/" + artistResponse.artist + "?app_id=codingbootcamp")
+.then(function (response) {
+  console.log("Artist: " + response.data.name);
+  console.log("Upcoming Events: " + response.data.upcoming_event_count);
+});
+var movies = ;
+//=========================================
 
 inquirer
   .prompt([
@@ -38,13 +46,7 @@ inquirer
         ])
         .then(function (artistResponse) {
           console.log("You searched for: " + artistResponse.artist)
-          axios
-            .get("https://rest.bandsintown.com/artists/" + artistResponse.artist + "/events?app_id=codingbootcamp")
-            .then(function (response) {
-              console.log("Artist: " + response.data.name);
-              console.log("Upcoming Events: " + response.data.upcoming_event_count);
-              console.log(response.data[0])
-            })
+          
         });
       //===================SPOTIFY SONG SEARCH====SPOTIFY SONG SEARCH=========================================================================================================================================
     } else if (response.options === "songs") {
@@ -100,77 +102,26 @@ inquirer
       })
       //==============================================================================================================================================================
     } else if (response.options === "reccomendations") {
-
       inquirer
         .prompt([
           {
             type: "list",
-            message: "Search for...",
-            choices: ["Rolling Stones Concerts", "Pink Concerts", "Christmas Songs", "Classical Songs", "The Matrix", "Inception"],
+            message: "What would you like a customized reccomendation for?",
+            choices: ["concerts", "songs", "movies"],
             name: "recom"
           }
         ])
         .then(function (recomResponse) {
           console.log("You searched for: " + recomResponse.recom)
-          if (recomResponse.recom === "Rolling Stones Concerts") {
+          if (recomResponse.recom === "concerts") {
             axios
-              .get("https://rest.bandsintown.com/artists/rollingstones?app_id=codingbootcamp")
-              .then(function (response) {
-                console.log("Artist: " + response.data.name);
-                console.log("Upcoming Events: " + response.data.upcoming_event_count);
-              })
-          } else if (recomResponse.recom === "Pink Concerts") {
-            axios
-              .get("https://rest.bandsintown.com/artists/pink?app_id=codingbootcamp")
-              .then(function (response) {
-                console.log("Artist: " + response.data.name);
-                console.log("Upcoming Events: " + response.data.upcoming_event_count);
-              })
-          } else if (recomResponse.recom === "Christmas Songs") {
-            spotify.search({ type: 'track', query: "santa" }, function (err, data) {
-              if (err) {
-                return console.log('Error occurred: ' + err);
-              } else {
-                console.log("Artist: ", data.tracks.items[0].album.artists[0].name);
-                console.log("Song: ", data.tracks.items[0].name);
-                console.log("Preview URL: ", data.tracks.items[0].preview_url);
-              }
-            });
-          } else if (recomResponse.recom === "Classical Songs") {
-            spotify.search({ type: 'track', query: "fur elise" }, function (err, data) {
-              if (err) {
-                return console.log('Error occurred: ' + err);
-              } else {
-                console.log("Artist: ", data.tracks.items[0].album.artists[0].name);
-                console.log("Song: ", data.tracks.items[0].name);
-                console.log("Preview URL: ", data.tracks.items[0].preview_url);
-              }
-            });
-          } else if (recomResponse.recom === "The Matrix") {
-            axios.get("http://www.omdbapi.com/?t=thematrix&y=&plot=short&apikey=c6b8f6cd").then(
-              function (response) {
-                console.log("Movie: ", response.data.Title);
-                console.log("Release Year: ", response.data.Year);
-                console.log("IMDB Rating: ", response.data.imdbRating);
-                console.log("Rotten Tomatoes Rating: ", response.data.Ratings[1].Value);
-                console.log("Country of Production: ", response.data.Country);
-                console.log("Language: ", response.data.Language);
-                console.log("Movie Plot: ", response.data.Plot);
-                console.log("Movie Actors: ", response.data.Actors);
-
-              });
-          } else if (recomResponse.recom === "Inception") {
-            axios.get("http://www.omdbapi.com/?t=inception&y=&plot=short&apikey=c6b8f6cd").then(
-              function (response) {
-                console.log("Movie: ", response.data.Title);
-                console.log("Release Year: ", response.data.Year);
-                console.log("IMDB Rating: ", response.data.imdbRating);
-                console.log("Rotten Tomatoes Rating: ", response.data.Ratings[1].Value);
-                console.log("Country of Production: ", response.data.Country);
-                console.log("Language: ", response.data.Language);
-                console.log("Movie Plot: ", response.data.Plot);
-                console.log("Movie Actors: ", response.data.Actors);
-              });
+            .get("https://rest.bandsintown.com/artists/u2?app_id=codingbootcamp")
+            .then(function (response) {
+              console.log("Artist: " + response.data.name);
+              console.log("Upcoming Events: " + response.data.upcoming_event_count);
+            })
+          } else if (recomResponse.recom === "movies") {
+            console.log("you chose movies")
           }
         });
     }
